@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-const path = require('path'); // Bổ sung thư viện path
 const app = express();
 
 const authRoutes = require('./routes/auth');
@@ -20,12 +19,10 @@ app.use('/history', historyRoutes);
 app.use('/leaderboard', leaderboardRoutes);
 app.use('/withdraw', withdrawRoutes);
 
-// Phục vụ các file tĩnh React đã build (frontend)
-app.use(express.static(path.join(__dirname, '../onemax-frontend/build')));
+// ❌ Đã xóa phần phục vụ frontend vì bạn deploy frontend riêng
 
-// Với mọi request không phải API, trả về file index.html của React
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../onemax-frontend/build', 'index.html'));
+// ✅ Cổng chạy backend
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`✅ Server is running on port ${PORT}`);
 });
-
-module.exports = app;
